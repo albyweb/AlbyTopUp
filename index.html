@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
@@ -56,7 +56,7 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       display: none;
     }
-    form input, form select, form button {
+    form input, form button {
       display: block;
       width: 100%;
       padding: 10px;
@@ -124,13 +124,7 @@
   <input type="text" id="playerId" placeholder="Masukkan ID Pemain" required>
   <input type="text" id="serverId" placeholder="Masukkan ID Server (jika ada)">
   <input type="text" id="username" placeholder="Masukkan Nama Pemain / Username">
-  <select id="nominal" required>
-    <option value="">Pilih Nominal</option>
-    <option value="5 Diamonds">5 Diamonds</option>
-    <option value="20 Diamonds">20 Diamonds</option>
-    <option value="50 Diamonds">50 Diamonds</option>
-    <option value="Request Penjual">Request Penjual</option>
-  </select>
+  <input type="text" id="nominal" placeholder="Masukkan Nominal yang diinginkan" required>
   <button type="button" onclick="sendToWhatsApp()">Kirim ke WhatsApp</button>
 </form>
 
@@ -142,13 +136,16 @@
     document.getElementById("gameTitle").innerText = "Top Up " + game;
     document.getElementById("topupForm").style.display = "block";
 
-    // Kalau Roblox, hanya username + nominal
+    // Atur tampilan input sesuai game
     if (game === "Roblox") {
       document.getElementById("playerId").style.display = "none";
       document.getElementById("serverId").style.display = "none";
-    } else {
+    } else if (game === "Mobile Legends") {
       document.getElementById("playerId").style.display = "block";
       document.getElementById("serverId").style.display = "block";
+    } else {
+      document.getElementById("playerId").style.display = "block";
+      document.getElementById("serverId").style.display = "none";
     }
 
     // Scroll otomatis ke form
@@ -161,12 +158,16 @@
     let username = document.getElementById("username").value;
     let nominal = document.getElementById("nominal").value;
 
-    let message = `Assalamu'alaikum Alby, bade top up😁🙌.\nGame: ${selectedGame}\n`;
+    let message = `Assalamu'alaikum Alby, bade top up.\nGame: ${selectedGame}\n`;
 
     if (selectedGame === "Roblox") {
       message += `Username: ${username}\n`;
     } else {
-      message += `ID Pemain: ${playerId}\nServer: ${serverId}\nNama: ${username}\n`;
+      message += `ID Pemain: ${playerId}\n`;
+      if (selectedGame === "Mobile Legends") {
+        message += `Server: ${serverId}\n`;
+      }
+      message += `Nama: ${username}\n`;
     }
 
     message += `Nominal: ${nominal}`;
