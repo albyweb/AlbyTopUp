@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlbyStore - Top Up Game 🔥</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f172a;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+
+    /* Navbar */
+    nav {
+      background: #1e293b;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #38bdf8;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 2rem;
+    }
+
+    /* Game Cards */
+    .game-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      padding: 20px;
+    }
+    .game-card {
+      flex: 1 1 calc(50% - 20px);
+      max-width: 280px;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #1e293b, #334155);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .game-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+    .game-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      margin: 10px;
+    }
+    .game-info {
+      padding: 10px;
+    }
+    .game-info h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: #fff;
+    }
+    .game-info p {
+      margin: 4px 0 0;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+    }
+
+    /* Popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .popup.show {
+      display: flex;
+      opacity: 1;
+    }
+    .popup-content {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    .popup.show .popup-content {
+      transform: scale(1);
+    }
+    .popup-content h2 {
+      margin-bottom: 15px;
+    }
+    .popup-content input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
+      border: none;
+    }
+    .popup-content button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #38bdf8;
+      color: #000;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .popup-content button:hover {
+      background: #0ea5e9;
+    }
+
+    /* About */
+    #about {
+      max-width: 700px;
+      margin: auto;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    #about h2 {
+      margin-bottom: 15px;
+    }
+
+    /* Testimonial */
+    #testimonial {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    #testimonial h2 {
+      margin-bottom: 20px;
+    }
+    .testimonial-box {
+      background: #1e293b;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      position: relative;
+    }
+    .testimonial-box img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .testimonial-box h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    .testimonial-box p {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+    }
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2rem;
+      cursor: pointer;
+      color: #38bdf8;
+      background: none;
+      border: none;
+    }
+    .nav-btn.left {
+      left: -40px;
+    }
+    .nav-btn.right {
+      right: -40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#testimonial">Testimonial</a>
+  </nav>
+
+  <!-- Home -->
+  <section id="home">
+    <h1>🔥 AlbyStore - Top Up Game</h1>
+    <div class="game-list">
+      <div class="game-card" onclick="showForm('Free Fire')">
+        <img src="ff.jpg" alt="Free Fire">
+        <div class="game-info">
+          <h3>Top Up Free Fire</h3>
+          <p>Garena</p>
+        </div>
+      </div>
+      <div class="game-card" onclick="showForm('Mobile Legends')">
+        <img src="ml.jpg" alt="Mobile Legends">
+        <div class="game-info">
+          <h3>Top Up Mobile Legends</h3>
+          <p>Moonton</p>
+        </div>
+      </div>
+      <div class="game-card" onclick="showForm('PUBG Mobile')">
+        <img src="pubg.jpg" alt="PUBG Mobile">
+        <div class="game-info">
+          <h3>Top Up PUBG Mobile</h3>
+          <p>Tencent Games</p>
+        </div>
+      </div>
+      <div class="game-card" onclick="showForm('Blood Strike')">
+        <img src="bloodstrike.jpg" alt="Blood Strike">
+        <div class="game-info">
+          <h3>Top Up Blood Strike</h3>
+          <p>NetEase</p>
+        </div>
+      </div>
+      <div class="game-card" onclick="showForm('Magic Chess')">
+        <img src="magicchess.jpg" alt="Magic Chess">
+        <div class="game-info">
+          <h3>Magic Chess : Go Go</h3>
+          <p>Vizta Games</p>
+        </div>
+      </div>
+      <div class="game-card" onclick="showForm('Genshin Impact')">
+        <img src="genshin.jpg" alt="Genshin Impact">
+        <div class="game-info">
+          <h3>Top Up Genshin Impact</h3>
+          <p>HoYoverse</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <h2>Tentang AlbyStore</h2>
+    <p>Website <b>AlbyStore</b> dibuat untuk memudahkan para gamers melakukan top up game online dengan cepat, aman, dan terpercaya.</p>
+    <p>🎯 <b>Tujuan:</b> Memberikan layanan top up yang praktis tanpa perlu ribet mencari agen.</p>
+    <p>⚡ <b>Fungsi:</b> Menjadi perantara resmi untuk pembelian diamond, UC, Genesis Crystal, dan item game lainnya.</p>
+    <p>💎 <b>Manfaat untuk Pembeli:</b><br>- Harga terjangkau<br>- Transaksi cepat<br>- Bisa PayLater<br>- CS via WhatsApp 24/7</p>
+  </section>
+
+  <!-- Testimonial -->
+  <section id="testimonial">
+    <h2>Valuable Testimonial</h2>
+    <div class="testimonial-box">
+      <button class="nav-btn left" onclick="prevTestimonial()">&#10094;</button>
+      <div id="testimonial-content"></div>
+      <button class="nav-btn right" onclick="nextTestimonial()">&#10095;</button>
+    </div>
+  </section>
+
+  <!-- Popup Form -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2 id="game-title">Top Up</h2>
+      <input type="text" id="playerId" placeholder="Masukkan ID Player">
+      <input type="text" id="serverId" placeholder="Server ID (hanya ML)">
+      <input type="number" id="amount" placeholder="Masukkan Nominal">
+      <input type="text" id="paylater" placeholder="Paylater (contoh: 1 hari atau sekarang)">
+      <button onclick="sendWhatsApp()">Kirim ke WhatsApp</button>
+      <button onclick="closeForm()">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    // PopUp Form
+    let selectedGame = "";
+    function showForm(game) {
+      selectedGame = game;
+      document.getElementById("game-title").innerText = "Top Up " + game;
+      document.getElementById("popup").classList.add("show");
+    }
+    function closeForm() {
+      document.getElementById("popup").classList.remove("show");
+    }
+    function sendWhatsApp() {
+      const id = document.getElementById("playerId").value;
+      const server = document.getElementById("serverId").value;
+      const amount = document.getElementById("amount").value;
+      const paylater = document.getElementById("paylater").value;
+      let message = `🔥 Top Up ${selectedGame}\nID: ${id}\n`;
+      if (selectedGame === "Mobile Legends") {
+        message += `Server: ${server}\n`;
+      }
+      message += `Jumlah: ${amount}\nPayLater: ${paylater}`;
+      let url = "https://wa.me/6281234567890?text=" + encodeURIComponent(message);
+      window.open(url, "_blank");
+    }
+
+    // Testimonial
+    const testimonials = [
+      {name:"Pembeli 1", text:"Pelayanan sangat menarik dan cepat", img:"buyer1.jpg"},
+      {name:"Pembeli 2", text:"Website nya keren dan mudah digunakan 👍", img:"buyer2.jpg"},
+      {name:"Pembeli 3", text:"Harga nya murah, worth it banget!", img:"buyer3.jpg"},
+      {name:"Pembeli 4", text:"Ternyata bisa PayLater, kukira tidak bisa 😁", img:"buyer4.jpg"}
+    ];
+    let currentIndex = 0;
+    function showTestimonial(index) {
+      const t = testimonials[index];
+      document.getElementById("testimonial-content").innerHTML = `
+        <img src="${t.img}" alt="${t.name}">
+        <h3>${t.name}</h3>
+        <p>${t.text}</p>
+      `;
+    }
+    function prevTestimonial() {
+      currentIndex = (currentIndex - 1 + testimonials.length) % testimonials.length;
+      showTestimonial(currentIndex);
+    }
+    function nextTestimonial() {
+      currentIndex = (currentIndex + 1) % testimonials.length;
+      showTestimonial(currentIndex);
+    }
+    setInterval(() => { nextTestimonial(); }, 5000);
+    showTestimonial(currentIndex);
+  </script>
+</body>
+</html>
