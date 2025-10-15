@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbot Alby 98%</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #1e293b, #334155);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .chatbox {
+      width: 90%;
+      max-width: 450px;
+      height: 600px;
+      background: #0f172a;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      background: #1e293b;
+      padding: 10px 15px;
+      border-bottom: 1px solid #334155;
+    }
+    .header img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      margin-right: 10px;
+      object-fit: cover;
+    }
+    .messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .message {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    .avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      margin-right: 8px;
+      object-fit: cover;
+    }
+    .text {
+      padding: 10px 14px;
+      border-radius: 10px;
+      max-width: 75%;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+    .bot .text {
+      background: #475569;
+    }
+    .user {
+      flex-direction: row-reverse;
+    }
+    .user .avatar {
+      margin-left: 8px;
+      margin-right: 0;
+    }
+    .user .text {
+      background: #2563eb;
+    }
+    .typing {
+      font-style: italic;
+      color: #94a3b8;
+      margin-left: 45px;
+      animation: blink 1.5s infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0.6; }
+    }
+    .input-area {
+      display: flex;
+      border-top: 1px solid #334155;
+    }
+    input {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      outline: none;
+      background: #1e293b;
+      color: white;
+      font-size: 15px;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 0 18px;
+      cursor: pointer;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chatbox">
+    <div class="header">
+      <img src="gambar.png" alt="Bot Avatar" />
+      <div>
+        <strong>Alby Chatbot</strong><br />
+        <small style="color:#94a3b8;">Selalu siap membantu 💬</small>
+      </div>
+    </div>
+
+    <div class="messages" id="messages">
+      <div class="message bot">
+        <img class="avatar" src="gambar.png" alt="Bot" />
+        <div class="text">Halo! Aku Alby versi 98%, siap menjawab apa pun yang kamu tanya 😄</div>
+      </div>
+    </div>
+
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Ketik pesan..." />
+      <button onclick="sendMessage()">Kirim</button>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct";
+    const API_KEY = "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";
+
+    const messages = document.getElementById("messages");
+    const input = document.getElementById("userInput");
+    let typingIndicator;
+
+    async function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+      addMessage(text, "user");
+      input.value = "";
+
+      showTyping();
+      const reply = await getBotReply(text);
+      hideTyping();
+      addMessage(reply, "bot");
+    }
+
+    function addMessage(text, sender) {
+      const msg = document.createElement("div");
+      msg.classList.add("message", sender);
+
+      const avatar = document.createElement("img");
+      avatar.classList.add("avatar");
+      avatar.src = sender === "bot" ? "gambar.png" : "https://cdn-icons-png.flaticon.com/512/1946/1946429.png";
+
+      const msgText = document.createElement("div");
+      msgText.classList.add("text");
+      msgText.textContent = text;
+
+      msg.appendChild(avatar);
+      msg.appendChild(msgText);
+      messages.appendChild(msg);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function showTyping() {
+      typingIndicator = document.createElement("div");
+      typingIndicator.classList.add("typing");
+      typingIndicator.textContent = "Alby sedang berpikir...";
+      messages.appendChild(typingIndicator);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function hideTyping() {
+      if (typingIndicator) typingIndicator.remove();
+    }
+
+    async function getBotReply(userText) {
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ inputs: userText }),
+        });
+
+        const data = await response.json();
+
+        if (data && data[0] && data[0].generated_text) {
+          return data[0].generated_text;
+        } else if (data && data.generated_text) {
+          return data.generated_text;
+        } else {
+          return "Maaf, aku tidak yakin, bisa ulangi pertanyaannya? 😅";
+        }
+      } catch (error) {
+        console.error(error);
+        return "Terjadi kesalahan saat menghubungi AI 😢";
+      }
+    }
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+
+</body>
+</html>
